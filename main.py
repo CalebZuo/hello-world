@@ -72,4 +72,12 @@ mighty gods to carry the mountains away.
 '''
 
 from mymodule.stats_word import stats_text
-stats_word.stats_text(text)
+a = 3.1415926
+while True:
+    try:
+        stats_text(a)
+        break
+    except ValueError:
+        print("导入字符非法")
+        raise
+        

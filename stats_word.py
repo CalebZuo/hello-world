@@ -43,6 +43,8 @@ Namespaces are one honking great idea -- let's do more of those!
 import re #调用正则表达式模块
           # re.sub(pattern, repl, string, count=0, flags=0)
 def stats_text_en(t_en):  #定义函数
+    if not isinstance(t_en,str):
+        raise ValueError('输入的不是文本格式，请重新输入：') #isinstance(object, classinfo) 判断函数 object，对象   classinfo，类型
     m = t_en.replace(',','').replace('.','').replace(':','').replace(';','').replace('"','').replace('!','').replace('?','').replace('、','').replace('，','').replace('。','').replace('”','').replace('：','').replace('；','').replace('\n','').replace('！','').replace('？','').replace('/','').replace('*',' ').replace('--',' ')
     m = m.lower() #全英文单词小写
     m = re.sub("[^A-Za-z]", " ", m)   # 借用了这个正则表达式，这里保留了英文单词，^代表取出大小写a-z以外所有的字符串剔除
@@ -56,6 +58,8 @@ def stats_text_en(t_en):  #定义函数
     print('英文单词统计频率如下： \n',c) # 这里print()函数缩进就是封装进我定义的函数里面去了
 
 def stats_text_cn(t_cn):
+    if not isinstance(t_cn,str):
+        raise ValueError('输入的不是文本格式，请重新输入：')
     o = t_cn.replace(',','').replace('-',' ').replace('.','').replace(':','').replace(';','').replace('"','').replace('!','').replace('?','').replace('、','').replace('，','').replace('。','').replace('“','').replace('”','').replace('：','').replace('；','').replace('\n','').replace('！','').replace('？','').replace('/','').replace('*',' ').replace(' ','')
     o = re.sub("[A-Za-z0-9]", "",o) #借用了这个正则表达式，这里删除了英文单词，因为没有加上^
     p = {}
@@ -70,5 +74,9 @@ def stats_text_cn(t_cn):
 #分别调用stats_text_en和stats_text_cn，输出合并词频统计结果
 def stats_text(en_cn):
     '''中英文词频统计'''
-    return(stats_text_cn(en_cn) + stats_text_en(en_cn))
+    if not isinstance(en_cn,str):
+        raise ValueError
+    en_cn = ((stats_text_cn(en_cn), stats_text_en(en_cn)))
 stats_text(t)
+    
+
