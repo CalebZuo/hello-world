@@ -1,5 +1,5 @@
 # 利用的是day5的作业，把day5的作业封装进day6的函数中
-t = '''
+text = '''
 The Zen of Python, by Tim Peters
 Beautiful is better than ugly.
 Explicit is better than implicit.
@@ -40,43 +40,50 @@ Namespaces are one honking great idea -- let's do more of those!
 如果实现很容易解释，那可能是个好主意。
 命名空间是一个很棒的主意 - 让我们做更多的事情吧！
 '''
-import re #调用正则表达式模块
-          # re.sub(pattern, repl, string, count=0, flags=0)
-def stats_text_en(t_en):  #定义函数
-    if not isinstance(t_en,str):
-        raise ValueError('输入的不是文本格式，请重新输入：') #isinstance(object, classinfo) 判断函数 object，对象   classinfo，类型
-    m = t_en.replace(',','').replace('.','').replace(':','').replace(';','').replace('"','').replace('!','').replace('?','').replace('、','').replace('，','').replace('。','').replace('”','').replace('：','').replace('；','').replace('\n','').replace('！','').replace('？','').replace('/','').replace('*',' ').replace('--',' ')
-    m = m.lower() #全英文单词小写
-    m = re.sub("[^A-Za-z]", " ", m)   # 借用了这个正则表达式，这里保留了英文单词，^代表取出大小写a-z以外所有的字符串剔除
-    m = m.split()
-    n = {}
-    for i in m:
-        count = m.count(i)
+
+
+
+def stats_text_en(text, count): #在第八天基础上那个增加count控制输出
+    from collections import Counter #调用Counter计算器
+    if not isinstance(text, str):
+        raise ValueError('input data is not string type!,again!')
+    text = text.replace(',','').replace('.','').replace('--','').replace('*','').replace('!','')#讲非英文字符转化为空
+    text = text.lower()#将所有英文字符改为小写
+    text = text.split()#以空格拆分独立的单词
+    count = int(count) #增加一个int类型变量count
+    dir1 = {}
+    for i in text: #将字符转换为字典
+        count = text.count(i)
         r1 = {i:count}
-        n.update(r1)
-    c = sorted(n.items(),key=lambda x:x[1],reverse=True)
-    print('英文单词统计频率如下： \n',c) # 这里print()函数缩进就是封装进我定义的函数里面去了
+        dir1.update(r1)
 
-def stats_text_cn(t_cn):
-    if not isinstance(t_cn,str):
-        raise ValueError('输入的不是文本格式，请重新输入：')
-    o = t_cn.replace(',','').replace('-',' ').replace('.','').replace(':','').replace(';','').replace('"','').replace('!','').replace('?','').replace('、','').replace('，','').replace('。','').replace('“','').replace('”','').replace('：','').replace('；','').replace('\n','').replace('！','').replace('？','').replace('/','').replace('*',' ').replace(' ','')
-    o = re.sub("[A-Za-z0-9]", "",o) #借用了这个正则表达式，这里删除了英文单词，因为没有加上^
-    p = {}
-    for j in o:
-        count = o.count(j)
-        r2 = {j:count}
-        p.update(r2)
-    q = sorted(p.items(),key=lambda x:x[1],reverse=True)
-    print('中文字统计频率如下： \n',q)
+    dir2 = sorted(dir1.items(),key = lambda x:x[1],reverse = True)
+    dir2 = Counter(dir1).most_common(count) #按词频排序并用count控制输出
+    print(dir2)
 
 
-#分别调用stats_text_en和stats_text_cn，输出合并词频统计结果
-def stats_text(en_cn):
-    '''中英文词频统计'''
-    if not isinstance(en_cn,str):
-        raise ValueError
-    en_cn = ((stats_text_cn(en_cn), stats_text_en(en_cn)))
-stats_text(t)
+
+def stats_text_cn(text, count): #在第八天基础上那个增加count控制输出
+    from collections import Counter #调用Counter计算器
+    if not isinstance(text, str):
+        raise ValueError('input data is not string type!')
+    text = text.replace('\n','').replace('，','').replace('、','').replace(' ','').replace('""','')#删掉换行符，逗号，顿号,空格
+    count = int(count) #增加一个int类型变量count
+    b1 = {} 
+    for i in text: #由字符生成字典
+        b1.update({i: text.count(i)})
+
+    b2 = sorted(b1.items(),key = lambda x:x[1],reverse = True)
+    b2 = Counter(b1).most_common(count) #按词频排序并用count控制输出
+    print(b2)
+
+
+def stats_text(text, count):
+    from collections import Counter #调用Counter计算器
+    if not isinstance(text, str):
+        raise ValueError('input data is not string type!')
+    stats_text_en(text, count) #统计英文单词
+    stats_text_cn(text, count) #统计中文单词
+        
     
-
+    

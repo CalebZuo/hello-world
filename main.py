@@ -71,13 +71,16 @@ Filled with admiration for Yugong, the Emperor of Heavens ordered two
 mighty gods to carry the mountains away.
 '''
 
-from mymodule.stats_word import stats_text
-a = 3.1415926
-while True:
-    try:
-        stats_text(a)
-        break
-    except ValueError:
-        print("导入字符非法")
-        raise
+import mymodule.stats_word
+import json
+with open(r'''C:\Users\zuoze\Documents\GitHub\selfteaching-python-camp\exercises\1901010083\d09\mymodule\tang300.json''','r+', encoding='utf-8') as f : #不加'r', encoding='UTF-8'会报UnicodeDecodeError
+    read_date = f.read()
+f.closed
+
+try:
+    print('统计字数最多的前100个字： \n',mymodule.stats_word.stats_text_cn(read_date,100))
+except ValueError as w:
+    print(w)        
+
+
         
